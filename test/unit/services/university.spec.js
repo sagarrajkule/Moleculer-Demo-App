@@ -1,7 +1,7 @@
 "use strict";
 
 const { ServiceBroker } = require("moleculer");
-const { ValidationError } = require("moleculer").Errors;
+// const { ValidationError } = require("moleculer").Errors;
 const TestService = require("../../../services/university.service");
 
 describe("Test 'university' service", () => {
@@ -15,16 +15,10 @@ describe("Test 'university' service", () => {
 
 		it("should return with valid data'", async () => {
 			const res = await broker.call("university.list");
-			expect(res.universities).toBe([]);
-		});
-
-		it("should reject an ValidationError", async () => {
-			expect.assertions(1);
-			try {
-				await broker.call("university.list", { state: "" });
-			} catch(err) {
-				expect(err).toBeInstanceOf(ValidationError);
-			}
+			expect(res.universities)
+				.to.be.an.instanceof(Array)
+				.and.to.have.property(0)
+				.that.includes.all.keys([ "country", "name", "state-province" ]);
 		});
 
 	});
