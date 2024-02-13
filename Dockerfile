@@ -1,8 +1,6 @@
 # Use official Node.js 16 image
 FROM node:16-alpine
 
-ENV NODE_ENV=production
-
 RUN mkdir /app
 
 # Create and set the working directory in the container

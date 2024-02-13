@@ -15,34 +15,27 @@ module.exports = {
 				method: "GET",
 				path: "/universities"
 			},
-			// params: {
-			// 	page: { type: "number", min: 1 },
-			// 	pageSize: { type: "number", min: 10, max: 25 },
-			// 	state: { type: "string", optional: true },
-			// },
+			// Check if mandatory query parameters are provided
+			params: {
+				page: { type: "string", optional: false },
+				pageSize: { type: "string", optional: false },
+				state: { type: "string", optional: true },
+			},
+
 			async handler(ctx) {
-				try {
-					const { state, page, pageSize } = ctx.params;
+				const { state, page, pageSize } = ctx.params;
+				const country = "Australia";
+				
+				let universities = await this.getUniversities(country);
 
-					// Check if mandatory query parameters are provided
-					if (isEmpty(page) || isEmpty(pageSize)) {
-						// throw new Error("Missing mandatory query parameters: page, pageSize");
-					}
-
-					const country = "Australia";
-					let universities = await this.getUniversities(country);
-
-					// Filter by state if provided
-					if (!isEmpty(state)) {
-						universities = universities.filter(u => u["state-province"] === state);
-					}
-
-					// Pagination
-					return this.paginate(universities, page, pageSize);
-				} catch (error) {
-					return error.response.data;
+				// Filter by state if provided
+				if (!isEmpty(state)) {
+					universities = universities.filter(u => u["state-province"] === state);
 				}
-			}
+
+				// Pagination
+				return this.paginate(universities, page, pageSize);
+			},
 		}
 	},
 
@@ -69,6 +62,9 @@ module.exports = {
 		},
 
 		paginate(items, page = 1, pageSize = 10) {
+			page = page <=0 ? 1 : page;
+			pageSize = pageSize <= 0 ? 1 : pageSize; 
+
 			const startIndex = (page - 1) * pageSize;
 			const endIndex = page * pageSize;
 
