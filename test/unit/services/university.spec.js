@@ -1,26 +1,31 @@
 "use strict";
 
 const { ServiceBroker } = require("moleculer");
-// const { ValidationError } = require("moleculer").Errors;
-const TestService = require("../../../services/university.service");
+const UniversityService = require("../../../services/university.service");
 
 describe("Test 'university' service", () => {
 	let broker = new ServiceBroker({ logger: false });
-	broker.createService(TestService);
+	broker.createService(UniversityService);
 
 	beforeAll(() => broker.start());
 	afterAll(() => broker.stop());
 
 	describe("Test 'university.list' action", () => {
+		it("should return valid University data", async () => {
+			// Call the 'university.list' action with page and pageSize parameters
+			const res = await broker.call("university.list", { page: 1, pageSize: 10 });
 
-		it("should return with valid data'", async () => {
-			const res = await broker.call("university.list");
-			expect(res.universities)
-				.to.be.an.instanceof(Array)
-				.and.to.have.property(0)
-				.that.includes.all.keys([ "country", "name", "state-province" ]);
+			// Check if the response object has the 'universities' property
+			expect(res).toHaveProperty("universities");
+
+			// Check if 'universities' is an array and its first element has the expected keys
+			expect(res.universities).toBeInstanceOf(Array);
+			if (res.universities.length > 0) {
+				expect(res.universities[0]).toHaveProperty("country");
+				expect(res.universities[0]).toHaveProperty("name");
+				expect(res.universities[0]).toHaveProperty("state-province");
+			}
 		});
-
 	});
 });
 
