@@ -10,8 +10,8 @@ After starting, open the http://localhost:3000/ URL in your browser.
 On the welcome page you can test the generated services via API Gateway and check the nodes & services.
 
 In the Browser or REST client, try the following URLs:
-- http://localhost:3000/api/universities - Call the `university.list` action.
-- http://localhost:3000/api/universities?state=New%20South%20Wales - Call the `university.list` action with the `state` parameter.
+- http://localhost:3000/api/api/list-aliases - Call the `api.listAliases` action.
+- http://localhost:3000/api/university/universities?state=<State_Name>&page=<Current_Page>&pageSize=<Size_of_Items> - Call the `university.list` action with the `state` parameter.
 
 
 ## Services
