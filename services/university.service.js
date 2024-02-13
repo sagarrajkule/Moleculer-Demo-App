@@ -2,44 +2,24 @@
 
 const {isEmpty} = require("lodash");
 const axios = require("axios");
-const ApiService = require("moleculer-web");
 
 module.exports = {
 	name: "university",
-	mixins: [ApiService],
-
-	/**
-	 * Settings
-	 */
-	settings: {
-		port: process.env.UNIVERSITY_PORT || 3001,
-		routes: [
-			{
-				aliases: {
-					"GET universities": "university.list"
-				}
-			}
-		],
-
-		// Add the middleware to the `before` hooks
-		use: [],
-	},
-
-	/**
-	 * Dependencies
-	 */
-	dependencies: [],
 
 	/**
 	 * Actions
 	 */
 	actions: {
 		list: {
-			params: {
-				// page: { type: "number", min: 1 },
-				// pageSize: { type: "number", min: 10, max: 25 },
-				state: { type: "string", optional: true },
+			rest: {
+				method: "GET",
+				path: "/universities"
 			},
+			// params: {
+			// 	page: { type: "number", min: 1 },
+			// 	pageSize: { type: "number", min: 10, max: 25 },
+			// 	state: { type: "string", optional: true },
+			// },
 			async handler(ctx) {
 				try {
 					const { state, page, pageSize } = ctx.params;
@@ -64,6 +44,10 @@ module.exports = {
 				}
 			}
 		}
+	},
+
+	events: {
+
 	},
 
 	/**

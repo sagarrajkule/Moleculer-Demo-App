@@ -21,39 +21,34 @@ module.exports = {
 			{
 				path: "/api",
 
-				aliases: {
-					// Expose university service API
-					"GET /universities": "university.list"
-				},
-
+				// Access allowed to all actions
 				whitelist: [
-					// Access calls to all the `university.*` actions
-					"university.*",
+					"**"
 				],
-	
+
 				// Route-level Express middlewares
 				use: [],
+				mergeParams: true,
+				autoAliases: true,
+				aliases: {
 
+				},
+				callOptions: {},
 				bodyParsers: {
-					json: true
+					json: {
+						strict: false,
+						limit: "1MB"
+					},
+					urlencoded: {
+						extended: true,
+						limit: "1MB"
+					}
 				},
+				mappingPolicy: "all",
 
-				// Route error handler
-				onError(req, res, err) {
-					res.setHeader("Content-Type", "application/json; charset=utf-8");
-					res.writeHead(500);
-					res.end(JSON.stringify(err));
-				},
-	
 				// Enable/disable logging
 				logging: true
 			},
-		]
-	},
-	// Global error handler
-	onError(req, res, err) {
-		res.setHeader("Content-Type", "text/plain");
-		res.writeHead(err.code || 500);
-		res.end("Global error: " + err.message);
+		],
 	},
 };
