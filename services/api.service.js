@@ -31,7 +31,7 @@ module.exports = {
 				mergeParams: true,
 				autoAliases: true,
 				aliases: {
-
+			
 				},
 				callOptions: {},
 				bodyParsers: {

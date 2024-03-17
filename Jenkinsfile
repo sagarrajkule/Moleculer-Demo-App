@@ -4,10 +4,10 @@ pipeline {
     
     stages {
         // CI
-         stage('Checkout') {
+        stage('Checkout') {
             steps {
                 // Checkout code from a Git repository
-                checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/sagarrajkule/Moleculer-Demo-App.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/sagarraj/Moleculer-Demo-App.git']]])
             }
         }
         stage('Build') {

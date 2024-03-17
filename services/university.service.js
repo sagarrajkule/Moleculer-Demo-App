@@ -23,14 +23,28 @@ module.exports = {
 			},
 
 			async handler(ctx) {
-				const { state, page, pageSize } = ctx.params;
+				const { state, page, pageSize, name } = ctx.params;
 				const country = "Australia";
 				
 				let universities = await this.getUniversities(country);
 
 				// Filter by state if provided
 				if (!isEmpty(state)) {
-					universities = universities.filter(u => u["state-province"] === state);
+					universities = universities.filter(u => {
+						if (!isEmpty(u["state-province"]) && u["state-province"].toLowerCase() === state.toLowerCase()) {
+							return true;
+						} 
+						
+					});
+				}
+
+				if (!isEmpty(name)) {
+					universities = universities.filter(u => {
+						if (!isEmpty(u["name"]) && u["name"].toLowerCase().includes(name.toLowerCase())) {
+							return true;
+						} 
+						
+					});
 				}
 
 				// Pagination
